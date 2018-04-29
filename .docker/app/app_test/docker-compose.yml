@@ -1,0 +1,34 @@
+version: '3.5'
+
+x-db_config: &db_config
+  POSTGRES_PASSWORD: password
+  POSTGRES_USER: aircall
+  POSTGRES_DB: aircall_test
+
+services:
+  app:
+    build:
+      context: ../../../
+      dockerfile: ./.docker/app/app_test/Dockerfile
+    environment:
+      <<: *db_config
+      POSTGRES_HOST: db
+    volumes:
+      - ../../../:/aircall
+    networks:
+      - aircall
+    depends_on:
+      - db
+
+  db:
+    image: postgres:9.5
+    networks:
+      - aircall
+    volumes:
+      - /db/aircall/test/postgres-data:/var/lib/postgresql/data
+    environment:
+      <<: *db_config
+
+networks:
+  aircall:
+    driver: bridge

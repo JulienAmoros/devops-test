@@ -1,0 +1,11 @@
+version: '3.5'
+
+services:
+  dump_loader:
+    build: ./
+    volumes:
+      - /tmp/db/aircall/development/postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: aircall
+      POSTGRES_DB: aircall_dev
